@@ -1,0 +1,9 @@
+# Protected dataset (added by easy-dataset-share)
+training_data/training_datasets.zip.enc.extracted/
+.env
+.hf_cache
+__pycache__
+outputs/
+model_generations.csv
+model_judged.csv
+.ipynb_checkpoints/

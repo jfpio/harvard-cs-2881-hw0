@@ -52,13 +52,20 @@ class ModelQueryInterface:
 
             # Load model
             print("Loading model...")
-            self.model = AutoModelForCausalLM.from_pretrained(
-                model_name,
-                device_map=device_map,
-                torch_dtype=torch.bfloat16,
-                load_in_4bit=load_in_4bit,
-                trust_remote_code=True,
-            )
+            if torch.cuda.is_available():
+                dtype = torch.bfloat16 if torch.cuda.is_bf16_supported() else torch.float16
+            else:
+                dtype = torch.float32
+
+            model_kwargs = {
+                "device_map": device_map,
+                "dtype": dtype,
+                "trust_remote_code": True,
+            }
+            if load_in_4bit:
+                model_kwargs["load_in_4bit"] = True
+
+            self.model = AutoModelForCausalLM.from_pretrained(model_name, **model_kwargs)
 
             self.current_model_name = model_name
             print(f"✅ Model loaded successfully!")

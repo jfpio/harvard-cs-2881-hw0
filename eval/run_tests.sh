@@ -2,5 +2,5 @@
 
 echo "Running test script..."
 
-pip install openai
+pip install requests
 python eval/run_tests.py  
